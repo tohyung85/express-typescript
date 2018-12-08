@@ -16,6 +16,8 @@ export default class AuthRoutes {
   }
 
   private configRoutes() : void {
-    this.routes.get('/', this.authController.getUserWithEmail)
+    this.routes.get('/', this.authController.getUserWithEmail);
+    this.routes.post('/register', this.authController.registerUser);
+    this.routes.get('/login', this.authController.loginUser);
   }
 }
