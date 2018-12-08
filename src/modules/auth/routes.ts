@@ -1,20 +1,21 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
+import AuthController from './controllers/auth-controller';
 
-class Routes {
+export default class AuthRoutes {
   public routes : Router;
+  private authController: AuthController;
 
   constructor() {
+    this.setUpControllers();
     this.routes = Router();
     this.configRoutes();
   }
 
-  private configRoutes() {
-    this.routes.get('/', (req: Request, res: Response) => {
-      res.status(200).send({
-        message: 'GET Auth route success!'
-      });
-    })
+  private setUpControllers() : void {
+    this.authController = new AuthController();
+  }
+
+  private configRoutes() : void {
+    this.routes.get('/', this.authController.getUserWithEmail)
   }
 }
-
-export const routes = new Routes().routes;

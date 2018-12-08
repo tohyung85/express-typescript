@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
 import * as morgan from 'morgan';
+import { createConnection, Connection } from 'typeorm';
 
 import Router from './router';
 
@@ -11,11 +12,10 @@ class App {
 
   constructor() {
     this.app = express();
-    this.router = new Router();
     this.config();
   }
 
-  private config() : void {
+  private async config() {
     dotenv.config();
 
     this.app.use(morgan('short'));
@@ -23,7 +23,21 @@ class App {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
 
+    try {
+      await this.setUpDb();
+      this.configRoutes();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  private configRoutes() {
+    this.router = new Router();
     this.router.setupRoutes(this.app);
+  }
+
+  private setUpDb() : Promise<Connection>{
+      return createConnection();
   }
 }
 
