@@ -7,6 +7,10 @@ export class UserRepository extends AbstractRepository<User> {
     return this.repository.findOne({email});
   }
 
+  public findById = (id: number) : Promise<User> => {
+    return this.repository.findOne({ id });
+  }
+
   public createAndSave = (email: string, password: string) : Promise<User> => {
     const user = new User();
     user.email = email;

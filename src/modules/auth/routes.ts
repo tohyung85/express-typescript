@@ -18,6 +18,7 @@ export default class AuthRoutes {
 
   private configRoutes() : void {
     this.routes.get('/', this.authController.getUserWithEmail);
+    this.routes.get('/email', passport.authenticate('jwt', { session: false }) , this.authController.getEmailWithId);
     this.routes.post('/register', this.authController.registerUser);
     this.routes.get('/login', passport.authenticate('local', { session: false }), this.authController.loginUser);
   }

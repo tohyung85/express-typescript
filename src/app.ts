@@ -1,11 +1,11 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import * as dotenv from 'dotenv';
 import * as morgan from 'morgan';
 import { createConnection, Connection } from 'typeorm';
 
 import Router from './router';
 import appPassport from './modules/auth/passport';
+
 
 class App {
   public app: express.Application;
@@ -17,8 +17,6 @@ class App {
   }
 
   private async config() {
-    dotenv.config();
-
     this.app.use(morgan('short'));
 
     this.app.use(bodyParser.json());
@@ -26,8 +24,7 @@ class App {
 
     try {
       await this.setUpDb();
-      //config passport
-      appPassport.configPassports();
+      this.configPassportAuth();
       this.configRoutes();
     } catch (e) {
       console.log(e);
@@ -37,6 +34,10 @@ class App {
   private configRoutes() {
     this.router = new Router();
     this.router.setupRoutes(this.app);
+  }
+
+  private configPassportAuth() {
+    appPassport.configPassports();
   }
 
   private setUpDb() : Promise<Connection>{

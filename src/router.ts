@@ -9,13 +9,6 @@ export default class Router {
     this.authRoutes = new AuthRoutes();
   }
   public setupRoutes(app : Application): void {
-    app.route('/')
-      .get((req: Request, res: Response) => {
-        res.status(200).send({
-          message: 'GET request success!'
-        });
-      });
-
     app.use('/auth', this.authRoutes.routes);
   }
 
