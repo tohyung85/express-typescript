@@ -5,6 +5,7 @@ import * as morgan from 'morgan';
 import { createConnection, Connection } from 'typeorm';
 
 import Router from './router';
+import appPassport from './modules/auth/passport';
 
 class App {
   public app: express.Application;
@@ -25,6 +26,8 @@ class App {
 
     try {
       await this.setUpDb();
+      //config passport
+      appPassport.configPassports();
       this.configRoutes();
     } catch (e) {
       console.log(e);

@@ -23,18 +23,11 @@ export default class AuthController {
   }
 
   public loginUser = async (req: Request, res: Response) : Promise<void|Response> => {
-    const { email, password } = req.body;
-    try {
-      const user = await this.userRepository.findByEmail(email);
-      if (!user) return res.status(401).send({message: 'Invalid Email or Password'});
-      const match = await bcrypt.compare(password, user.password);
-      if (match) {
-        return res.status(200).send({message: 'Login Success!'});
-      }
-      return res.status(401).send({message: 'Invalid Email or Password'});
-    } catch (e) {
-      res.status(500).send({message: 'Server Error'});
-    }
+    const { user } = req;
+
+    if (!user) return res.status(401).send('Invalid Email or Password');
+
+    return res.status(200).send({message: 'Login Success!'});
   }
 
   public registerUser = async (req: Request, res: Response) : Promise<void> => {

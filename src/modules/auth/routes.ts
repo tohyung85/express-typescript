@@ -1,3 +1,4 @@
+import * as passport from 'passport';
 import { Router } from 'express';
 import AuthController from './controllers/auth-controller';
 
@@ -18,6 +19,6 @@ export default class AuthRoutes {
   private configRoutes() : void {
     this.routes.get('/', this.authController.getUserWithEmail);
     this.routes.post('/register', this.authController.registerUser);
-    this.routes.get('/login', this.authController.loginUser);
+    this.routes.get('/login', passport.authenticate('local', { session: false }), this.authController.loginUser);
   }
 }
