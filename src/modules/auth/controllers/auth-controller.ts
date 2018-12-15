@@ -3,14 +3,12 @@ import * as jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../repositories/user-repository';
-import { User } from '../entities/user';
 
 export class AuthController {
   private userRepository: UserRepository;
 
   constructor() {
     this.userRepository = getCustomRepository(UserRepository, process.env.NODE_ENV);
-    // this.userRepository = userRepository;
     this.bindMethods();
   }
 
