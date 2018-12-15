@@ -15,7 +15,7 @@ const opts : StrategyOptions = {
 
 const jwtStrategy = new JwtStrategy(opts, 
   async (payload: JWTPayload, done) => {
-    const userRepository : UserRepository = getCustomRepository(UserRepository);
+    const userRepository : UserRepository = getCustomRepository(UserRepository, process.env.NODE_ENV);
     try {
       const user : User = await userRepository.findById(payload.userId);
       if(!user) return done(null, false);

@@ -1,6 +1,6 @@
 import * as passport from 'passport';
 import { Router } from 'express';
-import AuthController from './controllers/auth-controller';
+import { AuthController } from './controllers/auth-controller';
 
 export default class AuthRoutes {
   public routes : Router;

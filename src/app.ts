@@ -1,10 +1,11 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as morgan from 'morgan';
-import { createConnection, Connection } from 'typeorm';
+import { getConnectionOptions, createConnection, Connection } from 'typeorm';
 
 import Router from './router';
 import appPassport from './modules/auth/passport';
+import { debug } from 'util';
 
 
 class App {
@@ -16,7 +17,7 @@ class App {
     this.config();
   }
 
-  private async config() {
+  private async config() : Promise<void> {
     this.app.use(morgan('short'));
 
     this.app.use(bodyParser.json());
@@ -31,17 +32,19 @@ class App {
     }
   }
 
-  private configRoutes() {
+  private configRoutes() : void {
     this.router = new Router();
     this.router.setupRoutes(this.app);
   }
 
-  private configPassportAuth() {
+  private configPassportAuth() : void {
     appPassport.configPassports();
   }
 
-  private setUpDb() : Promise<Connection>{
-      return createConnection();
+  private async setUpDb() : Promise<Connection>{
+    console.log(process.env.NODE_ENV);
+    const connectionOptions = await getConnectionOptions(process.env.NODE_ENV);
+    return createConnection(connectionOptions);
   }
 }
 

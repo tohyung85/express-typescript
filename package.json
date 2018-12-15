@@ -6,16 +6,21 @@
   "scripts": {
     "build": "tsc",
     "dev": "./node_modules/nodemon/bin/nodemon.js",
-    "start": "ts-node ./src/server.ts",
+    "start": "NODE_ENV=default ts-node ./src/server.ts",
     "prod": "npm run build && ts-node ./dist/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test-server": "NODE_ENV=test ts-node ./src/server.ts",
+    "migrate-test": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:run -c test",
     "migrate": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:run",
     "rollback": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:revert"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^23.3.10",
     "@types/node": "^10.12.12",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5",
     "ts-node": "^7.0.1",
     "typescript": "^3.2.2"
   },

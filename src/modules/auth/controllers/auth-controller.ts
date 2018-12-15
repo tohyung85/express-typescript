@@ -5,14 +5,23 @@ import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../repositories/user-repository';
 import { User } from '../entities/user';
 
-export default class AuthController {
+export class AuthController {
   private userRepository: UserRepository;
 
   constructor() {
-    this.userRepository = getCustomRepository(UserRepository);
+    this.userRepository = getCustomRepository(UserRepository, process.env.NODE_ENV);
+    // this.userRepository = userRepository;
+    this.bindMethods();
   }
 
-  public getUserWithEmail = async (req: Request, res: Response) : Promise<Response> => {
+  private bindMethods () {
+    this.getUserWithEmail = this.getUserWithEmail.bind(this);
+    this.getEmailWithId = this.getEmailWithId.bind(this);
+    this.loginUser = this.loginUser.bind(this);
+    this.registerUser = this.registerUser.bind(this);
+  }
+
+  public async getUserWithEmail (req: Request, res: Response) : Promise<Response> {
     const { email } = req.body;
     try {
       const user = await this.userRepository.findByEmail(email);
@@ -23,7 +32,7 @@ export default class AuthController {
     }
   }
 
-  public getEmailWithId = async (req: Request, res: Response) : Promise<Response> => {
+  public async getEmailWithId (req: Request, res: Response) : Promise<Response> {
     const { user } = req;
 
     try {
@@ -37,7 +46,7 @@ export default class AuthController {
     }
   }
 
-  public loginUser = async (req: Request, res: Response) : Promise<void|Response> => {
+  public async loginUser (req: Request, res: Response) : Promise<void|Response> {
     const { user } = req;
 
     if (!user) return res.status(401).send('Invalid Email or Password');
@@ -47,7 +56,7 @@ export default class AuthController {
     return res.status(200).send({message: 'Login Success!', token});
   }
 
-  public registerUser = async (req: Request, res: Response) : Promise<void> => {
+  public async registerUser (req: Request, res: Response) : Promise<void> {
     const { email, password } = req.body;
     try {
       const passwordHash = await bcrypt.hash(password, 10);

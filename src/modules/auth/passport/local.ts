@@ -8,7 +8,7 @@ const localStrategy = new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password'
   }, async (email: string, password: string, done) => {
-    const userRepository : UserRepository = getCustomRepository(UserRepository);
+    const userRepository : UserRepository = getCustomRepository(UserRepository, process.env.NODE_ENV);
     try {
       const user: User = await userRepository.findByEmail(email);
       if (!user) return done(null, false);
