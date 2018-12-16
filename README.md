@@ -12,3 +12,5 @@ Includes the following:
 - morgan
 - Mocha and Chai + Chai-Http
 - Auth Module with Passport, JWT, Bcrypt
+  - User table with email and password
+  - Successful login returns JWT
