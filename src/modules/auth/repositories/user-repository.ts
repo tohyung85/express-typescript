@@ -18,4 +18,21 @@ export class UserRepository extends AbstractRepository<User> {
     user.password = password;
     return this.manager.save(user);
   }
+
+  public async deleteById (id: number) : Promise<User> {
+    const user : User = await this.findById(id);
+    return this.manager.remove(user);
+  }
+
+  public deleteUser (user: User) : Promise<User> {
+    return this.manager.remove(user);
+  }
+
+  public clearTable () {
+    return this.repository.clear();
+  }
+
+  public numberOfEntries() {
+    return this.repository.count();
+  }
 }

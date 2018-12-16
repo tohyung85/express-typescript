@@ -61,13 +61,13 @@ export class AuthController {
       const user = await this.userRepository.createAndSave(email, passwordHash);
       res.status(200).send(user.whiteList());
     } catch(e) {
-      console.log(e);
       switch (e.code) {
         case 'ER_DUP_ENTRY':
-          res.status(401).send({message: 'User already exists'});
+          res.status(401).send('User already exists');
           break;
         default:
-          res.status(500).send({message: 'Server Error'});
+          console.log(e);
+          res.status(500).send('Server Error');
       }
     }
   }
