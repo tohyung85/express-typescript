@@ -19,7 +19,7 @@ const seedUser : RegisterParams = {
 };
 
 describe('Auth Routes', () => {
-  beforeEach(async () => { // reset database
+  afterEach(async () => { // reset database after each test
     const userRepo : UserRepository = getCustomRepository(UserRepository, process.env.NODE_ENV);
     await userRepo.clearTable();
     const passwordHash : string = await bcrypt.hash(seedUser.password, 10);
